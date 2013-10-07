@@ -1,6 +1,6 @@
 # encoding: utf-8
 
-require 'json'
+#require 'json'
 require 'pathname'
 
 module Rubocop
@@ -16,7 +16,45 @@ module Rubocop
           files:    [],
           summary:  { offence_count: 0 }
         }
-        @page = "<div class='files'>"
+        @page = "<style>
+        body {
+          background-color: 111;
+        }
+        .files {
+          color: F1F0F0;
+          font-family: helvetica;
+          font-size: 13px;
+          margin: 10px;
+        }
+        .file {
+          background-color: 222;
+          margin-bottom: 20px;
+        }
+        .page {
+          color: lightgreen;
+        }
+        .path {
+          color: lightblue;
+          padding: 5px;
+          font-size: 14px;
+        }
+        .offences {
+          margin: 5px;
+          border: 1px dotted grey;
+        }
+        .offence { 
+          padding: 10px 5px;
+        }
+        .convention {
+          background: darkslategrey;
+        }
+        .warning {
+          background-color: 500000;
+        }
+        .location {
+          font-size: 12px;
+        }
+        </style><div class='files'>"
       end
 
       def started(target_files)

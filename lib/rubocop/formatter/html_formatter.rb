@@ -24,14 +24,14 @@ module Rubocop
       end
 
       def file_finished(file, offences)
-        page += element_for_file(file, offences)
+        @page += element_for_file(file, offences)
         output_hash[:summary][:offence_count] += offences.count
       end
 
       def finished(inspected_files)
-        page += "</div>"
+        @page += "</div>"
         output_hash[:summary][:inspected_file_count] = inspected_files.count
-        output.write page  #output_hash.to_json
+        output.write @page  #output_hash.to_json
       end
 
       def metadata_hash
@@ -56,10 +56,10 @@ module Rubocop
 
       def element_for_offence(offence)
         "<div class='offence #{offence.severity}'>" +
-          "<span class='severity'>#{offence.severity}</span>" +
+          #"<span class='severity'>#{offence.severity}</span>" +
           "<span class='message'>#{offence.message}</span>" +
           "<br/>" +
-          "<span class='location'>#{offence.line}:#{offence.real_column}</span>" +
+          "<span class='location'>line: #{offence.line}, column:#{offence.real_column}</span>" +
           "</div>"
         #cop_name: offence.cop_name,
       end

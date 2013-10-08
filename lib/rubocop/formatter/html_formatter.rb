@@ -20,11 +20,14 @@ module Rubocop
         body {
           background-color: 111;
         }
+        span {
+          line-height: 20px;
+        }
         .files {
           color: F1F0F0;
           font-family: helvetica;
           font-size: 13px;
-          margin: 10px;
+          margin: 50px 10px;
         }
         .file {
           background-color: 222;
@@ -35,6 +38,7 @@ module Rubocop
         }
         .path {
           color: lightblue;
+          font-weight: bold;
           padding: 5px;
           font-size: 14px;
         }
@@ -84,8 +88,10 @@ module Rubocop
 
       def element_for_file(file, offences)
         file = "<div class='file'>" +
-                "<div class='path'>#{relative_path(file)}</div>" +
-                "<div class='offences'>"
+                  "<a href='#{relative_path(file)}'>"+
+                    "<div class='path'>#{relative_path(file)}</div>" +
+                  "</a>" +
+                  "<div class='offences'>"
 
         offences.map { |o| file += element_for_offence(o) }
 
@@ -94,14 +100,28 @@ module Rubocop
 
       def element_for_offence(offence)
         "<div class='offence #{offence.severity}'>" +
+          "#{offence.inspect}" +
           #"<span class='severity'>#{offence.severity}</span>" +
           "<span class='message'>#{offence.message}</span>" +
           "<br/>" +
-          "<span class='location'>line: #{offence.line}, column:#{offence.real_column}</span>" +
+          "<span class='location'>line: #{offence.line}, column:#{offence.real_column}</span>, &nbsp;<span class='cop'>cop name: #{offence.cop_name}</span>" +
+          source(offence) +
           "</div>"
-        #cop_name: offence.cop_name,
       end
 
+      def source(offence)
+          source_line = offence.location.source_line
+
+          if source_line.blank?
+            ''
+          else
+            "<pre class='source-lines'>
+              <span class='source-line'>#{source_line}</span>
+              <span class='source-highlight'>#{' ' * offence.location.column + '^' * offence.location.column_range.count}</span>
+             </pre>"
+          end
+
+      end
       private
 
       def relative_path(path)
